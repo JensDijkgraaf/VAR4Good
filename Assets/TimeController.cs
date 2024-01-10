@@ -7,8 +7,7 @@ public class TimeController : MonoBehaviour {
     [SerializeField, Tooltip("The amount of minutes a day should last."), Header("Initial Configuration")]
     private float minutesInDay;
 
-    [SerializeField, Range(0,24)]
-    private float startHour;
+    [SerializeField, Range(0, 24)] private float startHour = 12;
 
     [Header("UI Elements")]
     [SerializeField]
@@ -38,6 +37,7 @@ public class TimeController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         UpdateTimeOfDay();
+        RotateSun();
     }
     private void UpdateTimeOfDay() {
 
@@ -57,11 +57,11 @@ public class TimeController : MonoBehaviour {
     }
     private void RotateSun() {
         float currentHour = (float)currentTime.TimeOfDay.TotalHours;
-        float sunRotation = Mathf.Lerp(-90 / 270, 270/270, currentHour / 24);
+        // float sunRotation = Mathf.Lerp(-90, 270, currentHour / 24);
 
-        sunLight.transform.rotation = Quaternion.Euler(sunRotation * 270, sunLight.transform.rotation.eulerAngles.y, sunLight.transform.rotation.eulerAngles.z);
-    }
-    private void OnValidate() {
-        RotateSun();
+        float sunRotation = ((currentHour) / 24) * 360;
+        var rotation = sunLight.transform.rotation;
+        rotation = Quaternion.Euler(sunRotation - 90 , 0,0);
+        sunLight.transform.rotation = rotation;
     }
 }
