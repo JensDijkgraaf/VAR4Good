@@ -1319,6 +1319,7 @@ GameObject:
   - component: {fileID: 45436134}
   - component: {fileID: 45436133}
   - component: {fileID: 45436132}
+  - component: {fileID: 45436135}
   - component: {fileID: 45436131}
   - component: {fileID: 45436130}
   - component: {fileID: 45436129}
@@ -1556,6 +1557,19 @@ Transform:
   - {fileID: 1578666006}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &45436135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45436125}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9899e74e96f08644bb245f37f19031a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  jumpButton: {fileID: -3606815692864337203, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!1001 &46407640
 PrefabInstance:
   m_ObjectHideFlags: 0
