@@ -9,12 +9,18 @@ public class TreeInteraction : MonoBehaviour
 
     private float fallDuration = 5f;
 
+    private float hitCooldown = 0.5f;
+
+    private float lastHitTime;
+
     [SerializeField, Tooltip("Prefab for the log")]
     private GameObject logPrefab;
 
     [SerializeField, Tooltip("Sound played when the tree is hit")]
     private AudioClip treeHitSound;
 
+    [SerializeField, Tooltip("Sound played when the tree falls")]
+    private AudioClip treeFallSound;
     private AudioSource audioSource;
 
     void Start()
@@ -31,19 +37,22 @@ public class TreeInteraction : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Axe"))
         {
-            if (other.gameObject.GetComponent<Rigidbody>().velocity.magnitude > 10)
+            if (Time.time - lastHitTime > hitCooldown)
             {
-                if (hitCount < 5)
+                if (other.gameObject.GetComponent<Rigidbody>().velocity.magnitude > 3)
                 {
-                    hitCount++;
+                    if (hitCount < 5)
+                    {
+                        hitCount++;
 
-                    if (treeHitSound != null && audioSource != null)
-                    {
-                        audioSource.PlayOneShot(treeHitSound);
-                    }
-                    if (hitCount == 5)
-                    {
-                        StartCoroutine(FallTree());
+                        if (treeHitSound != null && audioSource != null)
+                        {
+                            audioSource.PlayOneShot(treeHitSound);
+                        }
+                        if (hitCount == 5)
+                        {
+                            StartCoroutine(FallTree());
+                        }
                     }
                 }
             }
@@ -52,6 +61,10 @@ public class TreeInteraction : MonoBehaviour
 
     private IEnumerator FallTree()
     {
+        if (treeFallSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(treeFallSound);
+        }
         float rotationSpeedX = 90f / fallDuration;
         float rotationSpeedZ = 90f / fallDuration;
 
