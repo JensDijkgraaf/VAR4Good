@@ -21,6 +21,9 @@ public class AxeInteraction : MonoBehaviour
 
     private int hitCount = 0;
 
+    private int prevHitId = -1;
+    private int currentHitId = -2;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -35,12 +38,17 @@ public class AxeInteraction : MonoBehaviour
         // Check if the other object's name contains "tree"
         if (other.gameObject.name.Contains("Tree"))
         {
+            currentHitId = other.gameObject.GetInstanceID();
             // Check if enough time has passed since the last hit
             if (Time.time - lastHitTime > hitCooldown)
             {
                 // Check if the axe's velocity is sufficient
                 if (GetComponent<Rigidbody>().velocity.magnitude > 3)
                 {
+                    if (currentHitId != prevHitId) {
+                        hitCount = 0;
+                    }
+                    prevHitId = currentHitId;
                     // Play the tree hit sound
                     if (treeHitSound != null && audioSource != null)
                     {
