@@ -9,8 +9,8 @@ public class FireCollision : MonoBehaviour {
     private void Start()
     {
         particles = GetComponent<ParticleSystem>();
-        if(particles is not null)
-            particles.Stop();
+        if (particles is not null) ;
+        // particles.Stop();
     }
 
     private void OnCollisionEnter(Collision collision) {
