@@ -9,7 +9,7 @@ public class JumpController : MonoBehaviour
     [SerializeField] private InputActionReference jumpButton;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
-    [SerializeField] private float jumpHeight = 1.0f;
+    [SerializeField] private float jumpHeight = 10.0f;
     private float gravityValue = -9.81f;
 
     private void Start()
@@ -30,7 +30,7 @@ public class JumpController : MonoBehaviour
     private void OnJump(InputAction.CallbackContext context)
     {
         if (groundedPlayer) 
-        {
+        {   
             playerVelocity.y += Mathf.Sqrt(jumpHeight * -3.0f * gravityValue);
         }
     }
@@ -38,6 +38,10 @@ public class JumpController : MonoBehaviour
     void Update()
     {
         groundedPlayer = controller.isGrounded;
+        if (groundedPlayer && playerVelocity.y < 0)
+        {
+            playerVelocity.y = 0f;
+        }
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
     }
