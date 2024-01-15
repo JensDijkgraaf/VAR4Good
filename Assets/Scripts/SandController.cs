@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class WaterCollision : MonoBehaviour
+public class SandCollision : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
@@ -8,21 +8,21 @@ public class WaterCollision : MonoBehaviour
         if (other.name.Equals("Bucket"))
         {
             // Enable the "Water" child object
-            Transform waterChild = other.transform.Find("Water");
             Transform sandChild = other.transform.Find("Sand");
+            Transform waterChild = other.transform.Find("Water");
             
-            if (waterChild != null)
+            if (sandChild != null)
             {
-                if (sandChild != null)
+                if (waterChild != null)
                 {
-                    sandChild.gameObject.SetActive(false);
+                    waterChild.gameObject.SetActive(false);
                 }
 
-                waterChild.gameObject.SetActive(true);
+                sandChild.gameObject.SetActive(true);
             }
             else
             {
-                Debug.LogError("Water child not found on the bucket!");
+                Debug.LogError("Sand child not found on the bucket!");
             }
         }
     }
