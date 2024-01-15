@@ -10,6 +10,8 @@ public class ScoreController : MonoBehaviour
     [SerializeField, Tooltip("Decrease in score for each tree hit"), Range(0, 10)]
     private int treeScoreDecrease = 1;
 
+    private List<string> actions = new List<string>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -19,11 +21,31 @@ public class ScoreController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void TreeHit()
     {
         score -= treeScoreDecrease;
+        // Assuming you want to track the action when a tree is hit
+        TrackAction("Tree chopped down");
+    }
+
+    // Add this method to track actions
+    public void TrackAction(string action)
+    {
+        actions.Add(action);
+    }
+
+    // Add a method to get the list of actions if needed
+    public List<string> GetActions()
+    {
+        return actions;
+    }
+
+    // Add a method to get the current score if needed
+    public int GetScore()
+    {
+        return score;
     }
 }
