@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.43472332, g: 0.48175186, b: 0.5626772, a: 1}
+  m_IndirectSpecularColor: {r: 0.43472108, g: 0.48174858, b: 0.56267476, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -23722,6 +23722,8 @@ MonoBehaviour:
   treeHitSound: {fileID: 8300000, guid: 764212bfc360de244915f0312d8414a4, type: 3}
   treeFallSound: {fileID: 8300000, guid: c96fff83d3041354c81f5e0f0b2fda96, type: 3}
   logPrefab: {fileID: 6880521240300278655, guid: 209387e33aa17cc49a9096ae2b0e5879, type: 3}
+  Player: {fileID: 0}
+  scoreController: {fileID: 0}
 --- !u!82 &575297539
 AudioSource:
   m_ObjectHideFlags: 0
@@ -31313,6 +31315,7 @@ GameObject:
   - component: {fileID: 782628378}
   - component: {fileID: 782628377}
   - component: {fileID: 782628376}
+  - component: {fileID: 782628386}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Untagged
@@ -31558,6 +31561,20 @@ Transform:
   - {fileID: 223974227}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &782628386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782628375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98933dd8f385ed34b98c48116dc5fb32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: 100
+  treeScoreDecrease: 1
 --- !u!1001 &784083630
 PrefabInstance:
   m_ObjectHideFlags: 0
