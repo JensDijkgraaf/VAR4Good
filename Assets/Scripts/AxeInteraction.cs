@@ -13,7 +13,11 @@ public class AxeInteraction : MonoBehaviour
     [SerializeField, Tooltip("Prefab for the log")]
     private GameObject logPrefab;
 
+    private GameObject Player;
+
     private AudioSource audioSource;
+
+    private ScoreController scoreController;
 
     // Cooldown between hits in seconds
     private float hitCooldown = 0.5f;
@@ -27,6 +31,14 @@ public class AxeInteraction : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        Player = GameObject.Find("Player");
+        scoreController = Player.GetComponent<ScoreController>();
+        
+        if (scoreController == null)
+        {
+            Debug.LogError("ScoreController not found");
+            return;
+        }
     }
 
     void Update()
@@ -49,6 +61,12 @@ public class AxeInteraction : MonoBehaviour
                         hitCount = 0;
                     }
                     prevHitId = currentHitId;
+                    // Dead trees are allowed to be chopped down.
+                    if (!other.gameObject.name.Contains("Dead"))
+                    {
+                        scoreController.TreeHit();
+                    }
+
                     // Play the tree hit sound
                     if (treeHitSound != null && audioSource != null)
                     {
