@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class TreeController : MonoBehaviour
 {
-    [SerializeField, Tooltip("Is the tree on fire?")]
-    private bool _isOnFire = true;
+    private bool _isOnFire = false;
 
     private float _burningTime = 30f;
     // Needed for spreading fire
@@ -26,9 +25,13 @@ public class TreeController : MonoBehaviour
 
     [SerializeField, Tooltip("Prefab for the log")]
     private GameObject logPrefab;
+    private ScoreController _scoreController;
     // Start is called before the first frame update
     void Start()
     {
+        Player = GameObject.Find("Player");
+        scoreController = Player.GetComponent<ScoreController>();
+
         audioSource = GetComponent<AudioSource>();
         neighbours = GetNearbyTrees();
 
@@ -69,8 +72,11 @@ public class TreeController : MonoBehaviour
 
     public void SetOnFire()
     {
-        _isOnFire = true;
-        StartCoroutine(BurnTree());
+        if (!_isOnFire)
+        {
+            _isOnFire = true;
+            StartCoroutine(BurnTree());
+        }
     }
     private List<GameObject> GetNearbyTrees(float radius = 5.0f)
     {
@@ -87,6 +93,7 @@ public class TreeController : MonoBehaviour
 
     private IEnumerator BurnTree()
     {
+        scoreController.TreeOnFire();
         // Display the fire animation
         particles.Play();
 
