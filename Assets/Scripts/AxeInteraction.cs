@@ -13,12 +13,11 @@ public class AxeInteraction : MonoBehaviour
     [SerializeField, Tooltip("Prefab for the log")]
     private GameObject logPrefab;
 
-    [SerializeField, Tooltip("Player component (XR origin for now), used for score updates")]
     private GameObject Player;
 
     private AudioSource audioSource;
 
-    public ScoreController scoreController;
+    private ScoreController scoreController;
 
     // Cooldown between hits in seconds
     private float hitCooldown = 0.5f;
@@ -32,7 +31,9 @@ public class AxeInteraction : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        Player = GameObject.Find("Player");
         scoreController = Player.GetComponent<ScoreController>();
+        
         if (scoreController == null)
         {
             Debug.LogError("ScoreController not found");

@@ -1,50 +1,91 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+public class CustomStringAttribute : System.Attribute
+{
+    public readonly string Value;
+
+    public CustomStringAttribute(string value)
+    {
+        Value = value;
+    }
+}
+public enum Actions
+{
+    [CustomString("Tree hit")]
+    TREE_HIT,
+    
+    [CustomString("Bee killed")]
+    BEE_KILLED,
+}
 
 public class ScoreController : MonoBehaviour
 {
     [SerializeField, Tooltip("Starting score for the player"), Range(0, 100)]
-    private int score = 100;
+    private int startScore = 100;
 
-    [SerializeField, Tooltip("Decrease in score for each tree hit"), Range(0, 10)]
-    private int treeScoreDecrease = 1;
-
-    private List<string> actions = new List<string>();
+    private readonly Dictionary<Actions, int> _offenseWeight = new();
+    private readonly Dictionary<Actions, int> _totalOffenses = new();
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-
+        InitializeDictionary();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void InitializeDictionary()
     {
-
+        _offenseWeight.Add(Actions.TREE_HIT, 1);
+        _offenseWeight.Add(Actions.BEE_KILLED, 2);
     }
 
+    // Public methods
     public void TreeHit()
     {
-        score -= treeScoreDecrease;
-        TrackAction($"Tree chopped down -{treeScoreDecrease} points");
+        TrackAction(Actions.TREE_HIT);
+        Application.Quit();
     }
 
-    // Add this method to track actions
-    public void TrackAction(string action)
+    private void TrackAction(Actions action)
     {
-        actions.Add(action);
+        int points = _offenseWeight[action];
+        if (_totalOffenses.ContainsKey(action))
+        {
+            _totalOffenses[action] += points;
+        }
+        else
+        {
+            _totalOffenses[action] = points;
+        }
     }
 
-    // Add a method to get the list of actions if needed
-    public List<string> GetActions()
+    public string GetSummary()
     {
-        return actions;
+        var summaryLines = _totalOffenses.Select(entry =>
+        {
+            string customString = GetCustomString(entry.Key);
+            int deduction = entry.Value * _offenseWeight[entry.Key];
+            return $"{customString} x{entry.Value}\nDeducted: {deduction} points";
+        }).ToList();
+
+        int totalScore = GetScore();
+        summaryLines.Add($"\nTotal: {totalScore}");
+
+        return string.Join("\n", summaryLines);
+
     }
 
-    // Add a method to get the current score if needed
+    private string GetCustomString(Actions action)
+    {
+        var field = typeof(Actions).GetField(action.ToString());
+        var attribute = (CustomStringAttribute)Attribute.GetCustomAttribute(field, typeof(CustomStringAttribute));
+
+        return attribute != null ? attribute.Value : action.ToString();
+    } 
     public int GetScore()
     {
-        return score;
+        return _totalOffenses.Aggregate(startScore,
+            (current, entry) => current - entry.Value * _offenseWeight[entry.Key]);
     }
 }
