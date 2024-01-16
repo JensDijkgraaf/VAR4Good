@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class StoneInteractor : MonoBehaviour
+public class SelectInteractor : MonoBehaviour
 {
     private MeshRenderer meshRenderer;
     private XRSocketInteractor socketInteractor;
