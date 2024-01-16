@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/trees-jens.unity
     guid: ba2cb49f2d7597744a3b4ca019695be3
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Annes debug.unity
     guid: 4e5270c8877e6c949ba5ec2699c2093e
   m_configObjects:
