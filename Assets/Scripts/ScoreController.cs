@@ -27,8 +27,7 @@ public class ScoreController : MonoBehaviour
     public void TreeHit()
     {
         score -= treeScoreDecrease;
-        // Assuming you want to track the action when a tree is hit
-        TrackAction("Tree chopped down");
+        TrackAction($"Tree chopped down -{treeScoreDecrease} points");
     }
 
     // Add this method to track actions
