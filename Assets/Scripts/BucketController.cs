@@ -24,8 +24,8 @@ public class BucketController : MonoBehaviour
         {
             waterChild.gameObject.SetActive(false);
             sandChild.gameObject.SetActive(true);
-        }
+        }        
     }
 
-
+    
 }
