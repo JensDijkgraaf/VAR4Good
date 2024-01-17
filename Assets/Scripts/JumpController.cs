@@ -28,7 +28,7 @@ public class JumpController : MonoBehaviour
     {
         if (!Physics.Raycast(transform.position, Vector3.down, out var hit)) return;
 
-        if (hit.distance <= 0.65) 
+        if (hit.distance <= 0.65)
         {
 
             playerVelocity.y = 0.0f;
@@ -41,4 +41,4 @@ public class JumpController : MonoBehaviour
         playerVelocity.y += gravityValue * Time.deltaTime;
         controller.Move(playerVelocity * Time.deltaTime);
     }
-} 
+}
