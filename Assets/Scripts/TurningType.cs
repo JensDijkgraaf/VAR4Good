@@ -1,13 +1,13 @@
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 
 public class DropdownController : MonoBehaviour
 {
-    public Dropdown dropdown;
+    public TMP_Dropdown dropdown;
     public GameObject continuousTurningUI;
     public GameObject snappingUI;
-    public GameObject continuousTurning; // Reference to the continuous movement object in XR rig
-    public GameObject snapping; // Reference to the snapping object in XR rig
+    public Behaviour continuousTurningScript; // Reference to ContinuousTurning script
+    public Behaviour snappingScript; // Reference to Snapping script
 
     private void Start()
     {
@@ -16,6 +16,9 @@ public class DropdownController : MonoBehaviour
         
         // Set the default selection
         OnDropdownValueChanged(dropdown.value);
+
+        //continuousTurningScript.enabled = true;
+        //snappingScript.enabled = false;
     }
 
     private void OnDropdownValueChanged(int index)
@@ -43,15 +46,15 @@ public class DropdownController : MonoBehaviour
 
     private void EnableContinuousTurning()
     {
-        // Enable continuous movement object and disable snapping object
-        continuousTurning.SetActive(true);
-        snapping.SetActive(false);
+        // Enable continuous turning script and disable snapping script
+        continuousTurningScript.enabled = true;
+        snappingScript.enabled = false;
     }
 
     private void EnableSnapping()
     {
-        // Enable snapping object and disable continuous movement object
-        continuousTurning.SetActive(false);
-        snapping.SetActive(true);
+        // Enable snapping script and disable continuous turning script
+        continuousTurningScript.enabled = false;
+        snappingScript.enabled = true;
     }
 }

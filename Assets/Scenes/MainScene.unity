@@ -33263,6 +33263,7 @@ GameObject:
   - component: {fileID: 782628378}
   - component: {fileID: 782628377}
   - component: {fileID: 782628376}
+  - component: {fileID: 782628386}
   m_Layer: 0
   m_Name: XR Origin (XR Rig)
   m_TagString: Untagged
@@ -33509,6 +33510,23 @@ Transform:
   - {fileID: 1818289546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &782628386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782628375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8524886f379b184699c0751137826ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dropdown: {fileID: 1307604152}
+  continuousTurningUI: {fileID: 1760108339}
+  snappingUI: {fileID: 1923894988}
+  continuousTurningScript: {fileID: 782628376}
+  snappingScript: {fileID: 782628378}
 --- !u!1001 &784083630
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -81356,8 +81374,8 @@ MonoBehaviour:
   dropdown: {fileID: 0}
   continuousTurningUI: {fileID: 0}
   snappingUI: {fileID: 0}
-  continuousTurning: {fileID: 0}
-  snapping: {fileID: 0}
+  continuousTurningScript: {fileID: 0}
+  snappingScript: {fileID: 0}
 --- !u!1001 &1964694849
 PrefabInstance:
   m_ObjectHideFlags: 0
