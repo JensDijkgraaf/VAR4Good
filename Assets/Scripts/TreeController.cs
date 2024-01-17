@@ -39,7 +39,6 @@ public class TreeController : MonoBehaviour
         particles = GetComponent<ParticleSystem>();
         if (particles is not null)
             particles.Stop();
-
         if (_isOnFire)
             SetOnFire();
     }
@@ -95,10 +94,16 @@ public class TreeController : MonoBehaviour
     private IEnumerator BurnTree()
     {
         _scoreController.TreeOnFire();
+
         // Display the fire animation
         particles.Play();
 
+        if (fireSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(fireSound);
+        }
         yield return new WaitForSeconds(_burningTime);
+
         StartCoroutine(FallTree(false));
     }
 
@@ -132,6 +137,10 @@ public class TreeController : MonoBehaviour
         if (shouldSpawnLogs)
             SpawnLogs(transform.position);
 
+        if (fireSound != null && audioSource != null)
+        {
+            audioSource.Stop();
+        }
         // Destroy the tree
         Destroy(this.gameObject);
     }

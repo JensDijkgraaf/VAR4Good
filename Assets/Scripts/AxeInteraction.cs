@@ -28,7 +28,7 @@ public class AxeInteraction : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         Player = GameObject.Find("Player");
         scoreController = Player.GetComponent<ScoreController>();
-        
+
         if (scoreController == null)
         {
             Debug.LogError("ScoreController not found");
@@ -52,7 +52,8 @@ public class AxeInteraction : MonoBehaviour
                 // Check if the axe's velocity is sufficient
                 if (GetComponent<Rigidbody>().velocity.magnitude > 3)
                 {
-                    if (currentHitId != prevHitId) {
+                    if (currentHitId != prevHitId)
+                    {
                         hitCount = 0;
                     }
                     prevHitId = currentHitId;
