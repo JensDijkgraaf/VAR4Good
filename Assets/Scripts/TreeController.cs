@@ -26,11 +26,12 @@ public class TreeController : MonoBehaviour
     [SerializeField, Tooltip("Prefab for the log")]
     private GameObject logPrefab;
     private ScoreController _scoreController;
+    private GameObject Player;
     // Start is called before the first frame update
     void Start()
     {
         Player = GameObject.Find("Player");
-        scoreController = Player.GetComponent<ScoreController>();
+        _scoreController = Player.GetComponent<ScoreController>();
 
         audioSource = GetComponent<AudioSource>();
         neighbours = GetNearbyTrees();
@@ -93,7 +94,7 @@ public class TreeController : MonoBehaviour
 
     private IEnumerator BurnTree()
     {
-        scoreController.TreeOnFire();
+        _scoreController.TreeOnFire();
         // Display the fire animation
         particles.Play();
 
