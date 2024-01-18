@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class CampfireController : MonoBehaviour
@@ -5,6 +6,8 @@ public class CampfireController : MonoBehaviour
     private int logCount = 0;
     private ParticleSystem particles;
     public bool isOnFire = false;
+    [SerializeField] private TextMeshPro logCountText;
+    [SerializeField] private TextMeshPro isOnFireText;
 
     void Start()
     {
@@ -45,7 +48,10 @@ public class CampfireController : MonoBehaviour
         if (other.gameObject.name.Contains("SM_Prop_Loghalf_02"))
         {
             logCount++;
+            logCountText.text = logCount.ToString();
         }
+
+        isOnFireText.text = isOnFire.ToString();
 
         if (other.gameObject.name.Contains("Match") && other.GetComponent<MatchController>().isOnFire)
         {
