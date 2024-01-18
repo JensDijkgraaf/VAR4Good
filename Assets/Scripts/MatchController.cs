@@ -7,16 +7,24 @@ public class MatchController : MonoBehaviour
     public bool isOnFire = false;
 
     private ParticleSystem particles;
-    
+
     // Start is called before the first frame update
     void Start()
     {
         particles = GetComponent<ParticleSystem>();
         particles.Stop();
-        
+
         if (isOnFire)
         {
             setOnFire();
+        }
+    }
+
+    void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.name.Contains("Tree") && isOnFire)
+        {
+            other.gameObject.GetComponent<TreeController>().SetOnFire();
         }
     }
 

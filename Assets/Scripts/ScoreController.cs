@@ -15,7 +15,10 @@ public enum Actions
 {
     [CustomString("Tree hit")]
     TREE_HIT,
-    
+
+    [CustomString("Set tree on fire")]
+    TREE_FIRE,
+     
     [CustomString("Bee killed")]
     BEE_KILLED,
 }
@@ -38,13 +41,19 @@ public class ScoreController : MonoBehaviour
     {
         _offenseWeight.Add(Actions.TREE_HIT, 1);
         _offenseWeight.Add(Actions.BEE_KILLED, 2);
+        _offenseWeight.Add(Actions.TREE_FIRE, 4);
     }
 
     // Public methods
     public void TreeHit()
     {
         TrackAction(Actions.TREE_HIT);
-        Application.Quit();
+    }
+
+    public void TreeOnFire()
+    {
+        TrackAction(Actions.TREE_FIRE);
+
     }
 
     private void TrackAction(Actions action)
