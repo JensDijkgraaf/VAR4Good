@@ -1,22 +1,69 @@
-using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using System;
+using Random = UnityEngine.Random;
 
 public class CampfireController : MonoBehaviour
 {
     private int logCount = 0;
+    private int stoneCount = 0;
     private ParticleSystem particles;
     public bool isOnFire = false;
-    [SerializeField] private TextMeshPro logCountText;
-    [SerializeField] private TextMeshPro isOnFireText;
+
+    private float elapsedTime = 0f;
+    private float spreadChance = 0.05f;
+    
+    private bool isTouchingMatch = false;
+
+    private float touchStartTime;
+
+    private GameObject collidedMatch = null;
+
+    private List<GameObject> neighbours;
+
+    [SerializeField, Tooltip("Sound for campfire")]
+    private AudioClip campfireSound;
+
+    private AudioSource audioSource;
 
     void Start()
     {
         particles = GetComponent<ParticleSystem>();
         particles.Stop();
+        audioSource = GetComponent<AudioSource>();
 
         if (isOnFire)
         {
             setOnFire();
+        }
+    }
+
+    void Update()
+    {
+        // Check if the match has been held against the campfire for 2 seconds or more
+        if (isTouchingMatch && Time.time - touchStartTime >= 2f
+             && collidedMatch != null && collidedMatch.GetComponent<MatchController>().isOnFire)
+        {
+            setOnFire();
+            collidedMatch = null;
+            touchStartTime = 0f;
+        }
+        if (isOnFire)
+        {
+            var main = particles.main;
+            main.startSize = 1f + logCount * 4f;
+
+            // Use time.deltaTime to count seconds
+            elapsedTime += Time.deltaTime;
+
+            // Check if a second has passed
+            if (elapsedTime >= 1f)
+            {
+                elapsedTime = 0f; // Reset the timer
+                // Spread fire to neighbours
+                // RandomSpreadFireToNeighbours();
+            }
         }
     }
 
@@ -29,41 +76,97 @@ public class CampfireController : MonoBehaviour
         var main = particles.main;
         main.loop = true;
         particles.Play();
+        audioSource.clip = campfireSound;
+        audioSource.loop = true;
+        audioSource.Play();
         StartFireTimer();
+    }
+
+    public void removeLog()
+    {
+        logCount--;
+        neighbours = GetNearbyTrees(logCount);
+        if (logCount == 1)
+        {
+            return;
+        } else 
+        {
+            Invoke("removeLog", 5f);
+        }
     }
 
     public void putFireOut()
     {
         isOnFire = false;
         particles.Stop();
+        audioSource.Stop();
     }
 
     private void StartFireTimer()
     {
-        Invoke("putFireOut", 20f);
+        Invoke("removeLog", 5f);
+    }
+
+    public void AddStone()
+    {
+        stoneCount++;
+    }
+
+    public void AddLog()
+    {
+        logCount++;
+        neighbours = GetNearbyTrees(logCount);
+    }
+
+    private void RandomSpreadFireToNeighbours()
+    {
+        foreach (var neighbour in neighbours)
+        {
+            if (Random.Range(0f, 1f) <= spreadChance)
+                neighbour.GetComponent<TreeController>().SetOnFire();
+        }
+    }
+
+    private List<GameObject> GetNearbyTrees(float radius)
+    {
+        List<GameObject> nearbyTrees = new List<GameObject>();
+        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
+        foreach (var collider in colliders)
+        {
+            if (collider.gameObject.name.Contains("Tree") && collider.gameObject != gameObject)
+                nearbyTrees.Add(collider.gameObject);
+        }
+
+        return nearbyTrees;
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name.Contains("SM_Prop_Loghalf_02"))
+        if (other.gameObject.name.Contains("Match") && 
+            other.GetComponent<MatchController>().isOnFire && logCount == 5 && stoneCount == 2)
         {
-            logCount++;
-            logCountText.text = logCount.ToString();
+            // Start the timer when the match touches the tree
+            isTouchingMatch = true;
+            touchStartTime = Time.time;
+            collidedMatch = other.gameObject;
         }
 
-        isOnFireText.text = isOnFire.ToString();
-
-        if (other.gameObject.name.Contains("Match") && other.GetComponent<MatchController>().isOnFire)
+        if (isOnFire && other.gameObject.name.Contains("Log"))
         {
-            setOnFire();
+            AddLog();
+            Destroy(other.gameObject);
         }
     }
 
+
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.name.Contains("SM_Prop_Loghalf_02"))
+        if (other.gameObject.name.Contains("Match"))
         {
-            logCount--;
+            // Reset the timer and references when the match stops touching the tree
+            isTouchingMatch = false;
+            touchStartTime = 0f;
+            collidedMatch = null;
         }
     }
 }
