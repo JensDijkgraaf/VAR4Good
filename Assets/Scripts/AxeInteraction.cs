@@ -50,7 +50,7 @@ public class AxeInteraction : MonoBehaviour
             if (Time.time - lastHitTime > hitCooldown)
             {
                 // Check if the axe's velocity is sufficient
-                if (GetComponent<Rigidbody>().velocity.magnitude > 3)
+                if (GetComponent<Rigidbody>().velocity.magnitude > 1)
                 {
                     if (currentHitId != prevHitId)
                     {
