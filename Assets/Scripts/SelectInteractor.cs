@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using System.Collections;
 
 public class SelectInteractor : MonoBehaviour
 {
@@ -8,7 +9,6 @@ public class SelectInteractor : MonoBehaviour
 
     private CampfireController campfireController;
     private bool isStoneSocket = false;
-
     private bool isLogSocket = false;
 
     void Start()
@@ -32,11 +32,18 @@ public class SelectInteractor : MonoBehaviour
     private void HideMaterial(SelectEnterEventArgs arg)
     {
         meshRenderer.enabled = false;
-        if (isStoneSocket) 
+
+        XRGrabInteractable grabInteractable = arg.interactable.GetComponent<XRGrabInteractable>();
+        if (grabInteractable != null)
+        {
+            StartCoroutine(DisableGrabInteractable(grabInteractable, arg.interactable.gameObject));
+        }
+
+        if (isStoneSocket)
         {
             campfireController.AddStone();
         }
-        if (isLogSocket) 
+        if (isLogSocket)
         {
             campfireController.AddLog();
         }
@@ -45,5 +52,27 @@ public class SelectInteractor : MonoBehaviour
     private void ShowMaterial(SelectExitEventArgs arg)
     {
         meshRenderer.enabled = true;
+    }
+
+    private IEnumerator DisableGrabInteractable(XRGrabInteractable grabInteractable, GameObject obj)
+    {
+        // Wait for a short duration before disabling XRGrabInteractable
+        yield return new WaitForSeconds(0.2f);
+
+        if (grabInteractable != null)
+        {
+            grabInteractable.enabled = false;
+            // Make the object kinematic after the delay
+            MakeKinematic(obj);
+        }
+    }
+
+    private void MakeKinematic(GameObject obj)
+    {
+        Rigidbody rb = obj.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            rb.isKinematic = true;
+        }
     }
 }
