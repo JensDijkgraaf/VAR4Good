@@ -7,6 +7,7 @@ public class TreeController : MonoBehaviour
     private bool _isOnFire = false;
 
     private float _burningTime = 30f;
+
     // Needed for spreading fire
     private List<GameObject> neighbours;
 
@@ -16,6 +17,7 @@ public class TreeController : MonoBehaviour
     private ParticleSystem particles;
 
     private AudioSource audioSource;
+
     [SerializeField, Tooltip("Sound for tree falling")]
     private AudioClip treeFallSound;
 
@@ -25,8 +27,11 @@ public class TreeController : MonoBehaviour
 
     [SerializeField, Tooltip("Prefab for the log")]
     private GameObject logPrefab;
+
     private ScoreController _scoreController;
+
     private GameObject Player;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -78,6 +83,7 @@ public class TreeController : MonoBehaviour
             StartCoroutine(BurnTree());
         }
     }
+
     private List<GameObject> GetNearbyTrees(float radius = 5.0f)
     {
         List<GameObject> nearbyTrees = new List<GameObject>();
@@ -102,6 +108,7 @@ public class TreeController : MonoBehaviour
         {
             audioSource.PlayOneShot(fireSound);
         }
+
         yield return new WaitForSeconds(_burningTime);
 
         StartCoroutine(FallTree(false));
@@ -110,28 +117,29 @@ public class TreeController : MonoBehaviour
     // Coroutine
     public IEnumerator FallTree(bool shouldSpawnLogs = true)
     {
-        // Play the tree falling sound
-        if (treeFallSound != null && audioSource != null)
+        if (!gameObject.name.Contains("Dead"))
         {
-            audioSource.PlayOneShot(treeFallSound);
+            // Play the tree falling sound
+            if (treeFallSound != null && audioSource != null)
+            {
+                audioSource.PlayOneShot(treeFallSound);
+            }
+
+            Quaternion startRotation = transform.rotation;
+            Quaternion targetRotation = Quaternion.Euler(startRotation.eulerAngles.x + 90f, startRotation.eulerAngles.y,
+                startRotation.eulerAngles.z + 90f);
+
+            float elapsedTime = 0f;
+
+            while (elapsedTime < fallDuration)
+            {
+                transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime / fallDuration);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            transform.rotation = targetRotation;
         }
-
-        float rotationSpeedX = 90f / fallDuration;
-        float rotationSpeedZ = 90f / fallDuration;
-
-        Quaternion startRotation = transform.rotation;
-        Quaternion targetRotation = Quaternion.Euler(startRotation.eulerAngles.x + 90f, startRotation.eulerAngles.y, startRotation.eulerAngles.z + 90f);
-
-        float elapsedTime = 0f;
-
-        while (elapsedTime < fallDuration)
-        {
-            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, elapsedTime / fallDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        transform.rotation = targetRotation;
 
         // Spawn logs after the tree falls
         if (shouldSpawnLogs)
@@ -141,9 +149,11 @@ public class TreeController : MonoBehaviour
         {
             audioSource.Stop();
         }
+
         // Destroy the tree
         Destroy(this.gameObject);
     }
+
     private void SpawnLogs(Vector3 spawnPosition)
     {
         // Spawn a random number of logs between 1 and 4
@@ -154,7 +164,8 @@ public class TreeController : MonoBehaviour
             // Duplicate the logPrefab
             GameObject newLog = Instantiate(logPrefab, spawnPosition, Quaternion.identity);
 
-            newLog.transform.position = new Vector3(spawnPosition.x + Random.Range(-0.5f, 0.5f), spawnPosition.y + 1, spawnPosition.z + Random.Range(-0.5f, 0.5f));
+            newLog.transform.position = new Vector3(spawnPosition.x + Random.Range(-0.5f, 0.5f), spawnPosition.y + 1,
+                spawnPosition.z + Random.Range(-0.5f, 0.5f));
             float randomRotationY = Random.Range(0f, 360f);
             newLog.transform.rotation = Quaternion.Euler(0f, randomRotationY, 0f);
 
