@@ -62,7 +62,7 @@ public class CampfireController : MonoBehaviour
             {
                 elapsedTime = 0f; // Reset the timer
                 // Spread fire to neighbours
-                // RandomSpreadFireToNeighbours();
+                RandomSpreadFireToNeighbours();
             }
         }
     }
@@ -82,15 +82,26 @@ public class CampfireController : MonoBehaviour
         StartFireTimer();
     }
 
-    public void removeLog()
+    public void removeLog(bool sand = false)
     {
-        logCount--;
         neighbours = GetNearbyTrees(logCount);
+
+        // If we have only one log of firepower left, we can only put out the fire with sand
         if (logCount == 1)
         {
-            return;
+            if (sand)
+            {
+                putFireOut();
+                logCount = 0;
+            } else
+            {
+                return;
+            }
+
+
         } else 
         {
+            logCount--;
             Invoke("removeLog", 5f);
         }
     }
@@ -116,6 +127,23 @@ public class CampfireController : MonoBehaviour
     {
         logCount++;
         neighbours = GetNearbyTrees(logCount);
+    }
+
+    public void AddSand()
+    {
+        if (isOnFire)
+        {
+            removeLog(true);
+        }
+    }
+
+    public void AddWater()
+    {
+        if (isOnFire)
+        {
+            // Using only water one can not put out the fire
+            logCount = Math.Max(logCount - 1, 1);
+        }
     }
 
     private void RandomSpreadFireToNeighbours()
