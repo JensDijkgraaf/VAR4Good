@@ -9,14 +9,23 @@ public class MatchController : MonoBehaviour
     private ParticleSystem particles;
     private bool isTouchingTree = false;
     private float touchStartTime;
-    private GameObject collidedTree;    
+    private GameObject collidedTree;  
+
+    [SerializeField, Tooltip("Sound for match igniting")]
+    private AudioClip igniteSound;
+
+    [SerializeField, Tooltip("Sound for match being lit")]
+    private AudioClip litSound;
+
+    private AudioSource audioSource;  
 
     // Start is called before the first frame update
     void Start()
     {
         particles = GetComponent<ParticleSystem>();
         particles.Stop();
-        
+        audioSource = GetComponent<AudioSource>();
+
         if (isOnFire)
         {
             setOnFire();
@@ -69,6 +78,10 @@ public class MatchController : MonoBehaviour
         var main = particles.main;
         main.loop = true;
         particles.Play();
+        audioSource.PlayOneShot(igniteSound);
+        audioSource.clip = litSound;
+        audioSource.loop = true;
+        audioSource.Play();
         StartFireTimer();
     }
 
@@ -76,6 +89,7 @@ public class MatchController : MonoBehaviour
     {
         isOnFire = false;
         particles.Stop();
+        audioSource.Stop();
     }
 
     private void StartFireTimer()
