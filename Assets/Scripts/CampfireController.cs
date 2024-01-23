@@ -62,8 +62,13 @@ public class CampfireController : MonoBehaviour
             {
                 elapsedTime = 0f; // Reset the timer
                 // Spread fire to neighbours
-                // RandomSpreadFireToNeighbours();
+                RandomSpreadFireToNeighbours();
             }
+        }
+        // Extra check to make sure the campfire is put out when there are no logs left
+        if (logCount == 0 && isOnFire)
+        {
+            putFireOut();
         }
     }
 
@@ -82,17 +87,28 @@ public class CampfireController : MonoBehaviour
         StartFireTimer();
     }
 
-    public void removeLog()
+    public void removeLogsOverTime()
     {
         logCount--;
         neighbours = GetNearbyTrees(logCount);
-        if (logCount == 1)
+        if (logCount >= 2)
         {
-            return;
-        } else 
-        {
-            Invoke("removeLog", 5f);
+            Invoke("removeLogsOverTime", 5f);
         }
+    }
+
+    public void removeLog(bool isSand = false)
+    {
+        if (logCount == 1 && isSand)
+        {
+            logCount--;
+            putFireOut();
+        }
+        else if (logCount > 1)
+        {
+            logCount--;
+        }
+        neighbours = GetNearbyTrees(logCount);
     }
 
     public void putFireOut()
@@ -104,7 +120,7 @@ public class CampfireController : MonoBehaviour
 
     private void StartFireTimer()
     {
-        Invoke("removeLog", 5f);
+        Invoke("removeLogsOverTime", 5f);
     }
 
     public void AddStone()
@@ -116,6 +132,16 @@ public class CampfireController : MonoBehaviour
     {
         logCount++;
         neighbours = GetNearbyTrees(logCount);
+    }
+
+    public void AddSand()
+    {
+        removeLog(true);
+    }
+
+    public void AddWater()
+    {
+        removeLog();
     }
 
     private void RandomSpreadFireToNeighbours()
