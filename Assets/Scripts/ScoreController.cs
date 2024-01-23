@@ -21,6 +21,9 @@ public enum Actions
      
     [CustomString("Bee killed")]
     BEE_KILLED,
+    
+    [CustomString("Not keeping an eye on the fire")]
+    NOT_LOOKING_FIRE,
 }
 
 public class ScoreController : MonoBehaviour
@@ -42,6 +45,7 @@ public class ScoreController : MonoBehaviour
         _offenseWeight.Add(Actions.TREE_HIT, 1);
         _offenseWeight.Add(Actions.BEE_KILLED, 2);
         _offenseWeight.Add(Actions.TREE_FIRE, 4);
+        _offenseWeight.Add(Actions.NOT_LOOKING_FIRE, 2);
     }
 
     // Public methods
@@ -53,6 +57,12 @@ public class ScoreController : MonoBehaviour
     public void TreeOnFire()
     {
         TrackAction(Actions.TREE_FIRE);
+
+    }
+    
+    public void NotLookingAtFire()
+    {
+        TrackAction(Actions.NOT_LOOKING_FIRE);
 
     }
 
