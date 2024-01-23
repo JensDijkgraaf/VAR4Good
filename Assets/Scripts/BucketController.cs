@@ -15,7 +15,7 @@ public class BucketController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.name.Equals("Water"))
+        if (other.name.Contains("Water"))
         {
             sandChild.gameObject.SetActive(false);
             waterChild.gameObject.SetActive(true);
