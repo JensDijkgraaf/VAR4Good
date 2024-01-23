@@ -11,6 +11,7 @@ public class SelectInteractor : MonoBehaviour
     private bool isStoneSocket = false;
     private bool isLogSocket = false;
 
+    [System.Obsolete]
     void Start()
     {
         string parentName = transform.parent.name;
@@ -29,9 +30,9 @@ public class SelectInteractor : MonoBehaviour
         socketInteractor.selectExited.AddListener(ShowMaterial);
     }
 
+    [System.Obsolete]
     private void HideMaterial(SelectEnterEventArgs arg)
     {
-        meshRenderer.enabled = false;
 
         XRGrabInteractable grabInteractable = arg.interactable.GetComponent<XRGrabInteractable>();
         if (grabInteractable != null)
@@ -51,7 +52,7 @@ public class SelectInteractor : MonoBehaviour
 
     private void ShowMaterial(SelectExitEventArgs arg)
     {
-        meshRenderer.enabled = true;
+        // meshRenderer.enabled = true;
     }
 
     private IEnumerator DisableGrabInteractable(XRGrabInteractable grabInteractable, GameObject obj)
@@ -64,6 +65,8 @@ public class SelectInteractor : MonoBehaviour
             grabInteractable.enabled = false;
             // Make the object kinematic after the delay
             MakeKinematic(obj);
+            meshRenderer.enabled = false;
+            gameObject.SetActive(false);
         }
     }
 
