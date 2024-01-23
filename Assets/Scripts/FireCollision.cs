@@ -1,7 +1,8 @@
 using System;
 using UnityEngine;
 
-public class FireCollision : MonoBehaviour {
+public class FireCollision : MonoBehaviour
+{
     [SerializeField, Range(0, 5)]
     private float velocity_threshold;
 
@@ -23,12 +24,12 @@ public class FireCollision : MonoBehaviour {
         // Check if velocity is great enough
         if (velocity >= velocity_threshold)
         {
-           // Light the match on fire by calling the match object
-           var controller = other.gameObject.GetComponent("MatchController") as MatchController;
-           if (controller != null) 
-           {
-               controller.setOnFire();
-           }
+            // Light the match on fire by calling the match object
+            var controller = other.gameObject.GetComponent("MatchController") as MatchController;
+            if (controller != null)
+            {
+                controller.setOnFire();
+            }
         }
     }
 }
