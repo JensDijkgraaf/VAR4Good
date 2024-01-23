@@ -30,6 +30,7 @@ public class BucketController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        var campfire = other.GetComponent<CampfireController>();
         if (other.name.Contains("Water"))
         {
             // Check if the bucket is not already filled with water
@@ -50,22 +51,22 @@ public class BucketController : MonoBehaviour
                 audioSource.PlayOneShot(sandSound);
             }
         }
-        else if (other.name.Contains("Campfire"))
+        else if (other.name.Contains("Campfire") && campfire.isOnFire)
         {
             if (waterChild.gameObject.activeSelf)
             {
-                other.GetComponent<CampfireController>().AddWater();
+                campfire.AddWater();
                 // Set the bucket back to empty, so disable waterchild
                 waterChild.gameObject.SetActive(false);
                 audioSource.PlayOneShot(emptyWaterSound);
             }
             else if (sandChild.gameObject.activeSelf)
             {
-                other.GetComponent<CampfireController>().AddSand();
+                campfire.AddSand();
                 // Set the bucket back to empty, so disable sandchild
                 sandChild.gameObject.SetActive(false);
                 audioSource.PlayOneShot(emptySandSound);
-            }
+            } 
         }
     }
 

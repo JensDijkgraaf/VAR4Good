@@ -65,6 +65,11 @@ public class CampfireController : MonoBehaviour
                 RandomSpreadFireToNeighbours();
             }
         }
+        // Extra check to make sure the campfire is put out when there are no logs left
+        if (logCount == 0 && isOnFire)
+        {
+            putFireOut();
+        }
     }
 
     public void setOnFire()
@@ -82,28 +87,28 @@ public class CampfireController : MonoBehaviour
         StartFireTimer();
     }
 
-    public void removeLog(bool sand = false)
+    public void removeLogsOverTime()
     {
+        logCount--;
         neighbours = GetNearbyTrees(logCount);
-
-        // If we have only one log of firepower left, we can only put out the fire with sand
-        if (logCount == 1)
+        if (logCount >= 2)
         {
-            if (sand)
-            {
-                putFireOut();
-                logCount = 0;
-            } else
-            {
-                return;
-            }
+            Invoke("removeLogsOverTime", 5f);
+        }
+    }
 
-
-        } else 
+    public void removeLog(bool isSand = false)
+    {
+        if (logCount == 1 && isSand)
         {
             logCount--;
-            Invoke("removeLog", 5f);
+            putFireOut();
         }
+        else if (logCount > 1)
+        {
+            logCount--;
+        }
+        neighbours = GetNearbyTrees(logCount);
     }
 
     public void putFireOut()
@@ -115,7 +120,7 @@ public class CampfireController : MonoBehaviour
 
     private void StartFireTimer()
     {
-        Invoke("removeLog", 5f);
+        Invoke("removeLogsOverTime", 5f);
     }
 
     public void AddStone()
@@ -131,19 +136,12 @@ public class CampfireController : MonoBehaviour
 
     public void AddSand()
     {
-        if (isOnFire)
-        {
-            removeLog(true);
-        }
+        removeLog(true);
     }
 
     public void AddWater()
     {
-        if (isOnFire)
-        {
-            // Using only water one can not put out the fire
-            logCount = Math.Max(logCount - 1, 1);
-        }
+        removeLog();
     }
 
     private void RandomSpreadFireToNeighbours()
