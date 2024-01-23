@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3360412}
   - component: {fileID: 2359918}
   - component: {fileID: 64834770274957024}
-  - component: {fileID: 4340781935123288018}
-  - component: {fileID: 6497852111981872257}
+  - component: {fileID: 3450375660627946146}
+  - component: {fileID: 2877203599696038241}
   m_Layer: 0
   m_Name: SM_Prop_Loghalf_02
   m_TagString: Untagged
@@ -108,7 +108,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 43815557549916538, guid: f2c89080bd918cf458c6ad7d6860932b, type: 2}
---- !u!54 &4340781935123288018
+--- !u!54 &3450375660627946146
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -135,7 +135,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &6497852111981872257
+--- !u!114 &2877203599696038241
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
