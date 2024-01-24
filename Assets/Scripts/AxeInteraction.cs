@@ -71,6 +71,11 @@ public class AxeInteraction : MonoBehaviour
                     hitCount++;
                     if (hitCount == 5)
                     {
+                        if (other.gameObject.GetComponent<TreeController>().beehive != null)
+                        {
+                            scoreController.BeeKilled();
+                        }
+
                         hitCount = 0;
                         // Trigger tree falling sequence
                         StartCoroutine(other.gameObject.GetComponent<TreeController>().FallTree());

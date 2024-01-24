@@ -18,17 +18,24 @@ public class TreeController : MonoBehaviour
 
     private AudioSource audioSource;
 
+    private AudioSource beehiveAudioSource;
+
     [SerializeField, Tooltip("Sound for tree falling")]
     private AudioClip treeFallSound;
 
     [SerializeField, Tooltip("Sound for fire")]
     private AudioClip fireSound;
 
+    [SerializeField, Tooltip("Sound for bees")]
+    private AudioClip beesSound;
+
 
     [SerializeField, Tooltip("Prefab for the log")]
     private GameObject logPrefab;
 
     private ScoreController _scoreController;
+
+    public GameObject beehive;
 
     private GameObject Player;
 
@@ -44,8 +51,18 @@ public class TreeController : MonoBehaviour
         particles = GetComponent<ParticleSystem>();
         if (particles is not null)
             particles.Stop();
+
         if (_isOnFire)
             SetOnFire();
+
+        beehive = transform.Find("beehivePrefab").gameObject;
+        beehiveAudioSource = beehive.GetComponent<AudioSource>();
+        if (beehive != null && beehiveAudioSource != null)
+        {
+            beehiveAudioSource.clip = beesSound;
+            beehiveAudioSource.loop = true;
+            beehiveAudioSource.Play();
+        }
     }
 
     // Update is called once per frame
@@ -148,6 +165,11 @@ public class TreeController : MonoBehaviour
         if (fireSound != null && audioSource != null)
         {
             audioSource.Stop();
+        }
+
+        if (beehiveAudioSource != null)
+        {
+            beehiveAudioSource.Stop();
         }
 
         // Destroy the tree
