@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class ViewChanger : MonoBehaviour
 {
@@ -7,29 +9,71 @@ public class ViewChanger : MonoBehaviour
     public Color fadeColor;
     [SerializeField] public Camera mainCamera;
     [SerializeField] public Camera overheadCamera;
+    private Renderer bottomRend;
+    private Renderer topRend;
+    private DateTime currentTime;
+    private DateTime endOfDay;
 
-    private Renderer rend;
+    private ActionBasedContinuousMoveProvider actionBasedContinuousMoveProvider;
+    private ActionBasedContinuousTurnProvider actionBasedContinuousTurnProvider;
 
-    private void Start(){
-        rend = GetComponent<Renderer>();
-        TransitionToOverhead();
+
+    private void Start()
+    {
+        bottomRend  = mainCamera.transform.GetChild(0).GetComponent<Renderer>();
+        topRend = overheadCamera.transform.GetChild(0).GetComponent<Renderer>();
+
+        //Player
+        actionBasedContinuousMoveProvider = GameObject.Find("XR Origin (XR Rig)").GetComponent<ActionBasedContinuousMoveProvider>();
+        actionBasedContinuousTurnProvider = GameObject.Find("XR Origin (XR Rig)").GetComponent<ActionBasedContinuousTurnProvider>();
+
     }
 
-    public void TransitionToOverhead(){
-        FadeIn();
+    private void FreezePlayer()
+    {
+        actionBasedContinuousMoveProvider.enabled = false;
+        actionBasedContinuousTurnProvider.enabled = false;
     }
 
-    public void FadeIn(){
-        Fade(0,1);
+    private void UnFreezePlayer()
+    {
+        actionBasedContinuousMoveProvider.enabled = true;
+        actionBasedContinuousTurnProvider.enabled = true;
     }
 
-    public void FadeOut(){
-        Fade(1,0);
+    private void TransitionToOverheadSubtask()
+    {
+        ShowOverheadView();
+
+        // Freeze the player position.
+        FreezePlayer();
+
+        FadeOutTopRend();
     }
-    private void Fade(float alphaIn,float alphaOut){
-        StartCoroutine(FadeRoutine(alphaIn,alphaOut));
+
+    // Switches the camera to the overhead one, with a fade in/out.
+    public void TransitionToOverhead()
+    {
+        Fade(0, 1, bottomRend, this.TransitionToOverheadSubtask);
     }
-    public IEnumerator FadeRoutine(float alphaIn,float alphaOut){
+
+    // public void TransitionToGround()
+    // {
+    //     Fade(1, 0,topRend, this.ShowMainCamera);
+    // }
+
+    private void FadeOutTopRend()
+    {
+        Fade(1, 0,topRend);
+    }
+
+
+    private void Fade(float alphaIn,float alphaOut, Renderer rend, Action endCall = null)
+    {
+        StartCoroutine(FadeRoutine(alphaIn,alphaOut,rend, endCall));
+    }
+    public IEnumerator FadeRoutine(float alphaIn,float alphaOut,Renderer rend, Action endCall = null)
+    {
         float time = 0;
         while(time <=  fadeDuration){
 
@@ -43,9 +87,10 @@ public class ViewChanger : MonoBehaviour
         var color2 = fadeColor;
         color2.a = alphaOut;
         rend.material.SetColor("_Color",color2) ;
-        ShowOverheadView();
-
+        if(endCall != null)
+            endCall();
     }
+    
     public void ShowOverheadView()
     {
         mainCamera.enabled = false;

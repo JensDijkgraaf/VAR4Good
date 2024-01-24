@@ -27,17 +27,33 @@ public class TimeController : MonoBehaviour {
 
     private DateTime currentTime;
 
+    private DateTime endOfDay ;
     // Sunlight
     private int MINUTES_IN_DAY = 24 * 60;
     // Start is called before the first frame update
+
+    private ViewChanger viewChanger;
+
+    private bool hasTransitioned = false;
     void Start() {
         currentTime = DateTime.Now.Date + TimeSpan.FromHours(startHour);
+
+        viewChanger = GameObject.Find("XR Origin (XR Rig)").GetComponent<ViewChanger>();
+        endOfDay = currentTime.Date.AddHours(startHour + (minutesInDay / 60f));
     }
 
     // Update is called once per frame
     void Update() {
         UpdateTimeOfDay();
         RotateSun();
+
+        var test = currentTime <= endOfDay;
+        if (currentTime >= endOfDay && !hasTransitioned) {
+            // Transition to overhead view
+            viewChanger.TransitionToOverhead();
+            hasTransitioned = false;
+        }
+
     }
     private void UpdateTimeOfDay() {
 
@@ -63,5 +79,9 @@ public class TimeController : MonoBehaviour {
         var rotation = sunLight.transform.rotation;
         rotation = Quaternion.Euler(sunRotation - 90 , 0,0);
         sunLight.transform.rotation = rotation;
+    }
+
+    public DateTime GetCurrentTime() { 
+        return currentTime; 
     }
 }
