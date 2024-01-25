@@ -31,6 +31,8 @@ public class BucketController : MonoBehaviour
     [SerializeField, Tooltip("Material for sand")]
     private Material sandMaterial;
 
+    private float bucketCampfireRadius = 1.5f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -60,60 +62,84 @@ public class BucketController : MonoBehaviour
             // Deactivate child objects when held upside down
             if (waterChild.gameObject.activeSelf)
             {
-                particleRenderer.material = waterMaterial;
-                particles.Play();
-                audioSource.PlayOneShot(waterSound);
-                waterChild.gameObject.SetActive(false);
+                LetWaterFall();
+                var colliders = Physics.OverlapSphere(transform.position, bucketCampfireRadius);
+                foreach (Collider collider in colliders)
+                {
+                    var campfire = collider.GetComponent<CampfireController>();
+                    if (campfire != null && campfire.isOnFire)
+                    {
+                        campfire.AddWater();
+                        // Set the bucket back to empty, so disable waterchild
+                        waterChild.gameObject.SetActive(false);
+                        audioSource.PlayOneShot(emptyWaterSound);
+                    }       
+                }
             }
             else if (sandChild.gameObject.activeSelf)
             {
-                particleRenderer.material = sandMaterial;
-                particles.Play();
-                audioSource.PlayOneShot(sandSound);
-                sandChild.gameObject.SetActive(false);
+                LetSandFall();
+                var colliders = Physics.OverlapSphere(transform.position, bucketCampfireRadius);
+                foreach (Collider collider in colliders)
+                {
+                    var campfire = collider.GetComponent<CampfireController>();
+                    if (campfire != null && campfire.isOnFire)
+                    {
+                        campfire.AddSand();
+                        // Set the bucket back to empty, so disable sandchild
+                        sandChild.gameObject.SetActive(false);
+                        audioSource.PlayOneShot(emptySandSound);
+                    }       
+                }
             }
         }
     }
 
+    private void FillBucketSand()
+    {
+        // Check if the bucket is not already filled with sand
+        if (!sandChild.gameObject.activeSelf)
+        {
+            sandChild.gameObject.SetActive(true);
+            waterChild.gameObject.SetActive(false);
+            audioSource.PlayOneShot(sandSound);
+        }
+    }
+    private void FillBucketWater()
+    {
+        // Check if the bucket is not already filled with water
+        if (!waterChild.gameObject.activeSelf)
+        {
+            waterChild.gameObject.SetActive(true);
+            sandChild.gameObject.SetActive(false);
+            audioSource.PlayOneShot(waterSound);
+        }
+    }
+    private void LetWaterFall()
+    {
+        particleRenderer.material = waterMaterial;
+        particles.Play();
+        audioSource.PlayOneShot(waterSound);
+        waterChild.gameObject.SetActive(false); 
+    }
+    
+    private void LetSandFall()
+    {
+        particleRenderer.material = sandMaterial;
+        particles.Play();
+        audioSource.PlayOneShot(sandSound);
+        sandChild.gameObject.SetActive(false);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        var campfire = other.GetComponent<CampfireController>();
         if (other.name.Contains("Water"))
         {
-            // Check if the bucket is not already filled with water
-            if (!waterChild.gameObject.activeSelf)
-            {
-                waterChild.gameObject.SetActive(true);
-                sandChild.gameObject.SetActive(false);
-                audioSource.PlayOneShot(waterSound);
-            }
+            FillBucketWater();
         }
         else if (other.name.Contains("Sand"))
         {
-            // Check if the bucket is not already filled with sand
-            if (!sandChild.gameObject.activeSelf)
-            {
-                sandChild.gameObject.SetActive(true);
-                waterChild.gameObject.SetActive(false);
-                audioSource.PlayOneShot(sandSound);
-            }
-        }
-        else if (other.name.Contains("Campfire") && campfire.isOnFire)
-        {
-            if (waterChild.gameObject.activeSelf)
-            {
-                campfire.AddWater();
-                // Set the bucket back to empty, so disable waterchild
-                waterChild.gameObject.SetActive(false);
-                audioSource.PlayOneShot(emptyWaterSound);
-            }
-            else if (sandChild.gameObject.activeSelf)
-            {
-                campfire.AddSand();
-                // Set the bucket back to empty, so disable sandchild
-                sandChild.gameObject.SetActive(false);
-                audioSource.PlayOneShot(emptySandSound);
-            } 
+            FillBucketSand();
         }
     }
 }
