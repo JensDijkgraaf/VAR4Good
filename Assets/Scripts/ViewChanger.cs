@@ -17,11 +17,15 @@ public class ViewChanger : MonoBehaviour
     private ActionBasedContinuousMoveProvider actionBasedContinuousMoveProvider;
     private ActionBasedContinuousTurnProvider actionBasedContinuousTurnProvider;
 
+    private OffboardingSummary offboardingSummary;
+
 
     private void Start()
     {
         bottomRend  = mainCamera.transform.GetChild(0).GetComponent<Renderer>();
         topRend = overheadCamera.transform.GetChild(0).GetComponent<Renderer>();
+
+        offboardingSummary = GameObject.Find("Offboarding").GetComponent<OffboardingSummary>();
 
         //Player
         actionBasedContinuousMoveProvider = GameObject.Find("XR Origin (XR Rig)").GetComponent<ActionBasedContinuousMoveProvider>();
@@ -47,6 +51,8 @@ public class ViewChanger : MonoBehaviour
 
         // Freeze the player position.
         FreezePlayer();
+
+        offboardingSummary.ShowSummary();
 
         FadeOutTopRend();
     }
