@@ -63,8 +63,6 @@ public class BucketController : MonoBehaviour
             if (waterChild.gameObject.activeSelf)
             {
                 LetWaterFall();
-
-                // Check for Campfire
                 var colliders = Physics.OverlapSphere(transform.position, bucketCampfireRadius);
                 foreach (Collider collider in colliders)
                 {
@@ -72,19 +70,6 @@ public class BucketController : MonoBehaviour
                     if (campfire != null && campfire.isOnFire)
                     {
                         campfire.AddWater();
-                        // Set the bucket back to empty, so disable waterchild
-                        waterChild.gameObject.SetActive(false);
-                        audioSource.PlayOneShot(emptyWaterSound);
-                    }       
-                }
-                
-                colliders = Physics.OverlapSphere(transform.position, bucketCampfireRadius);
-                foreach (Collider collider in colliders)
-                {
-                    var tree = collider.GetComponent<TreeController>();
-                    if (tree != null && tree._isOnFire)
-                    {
-                        tree.AddWater();
                         // Set the bucket back to empty, so disable waterchild
                         waterChild.gameObject.SetActive(false);
                         audioSource.PlayOneShot(emptyWaterSound);
