@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TreeController : MonoBehaviour
 {
-    private bool _isOnFire = false;
+    public bool _isOnFire = false;
 
     private float _burningTime = 30f;
 
@@ -12,7 +12,7 @@ public class TreeController : MonoBehaviour
     private List<GameObject> neighbours;
 
     private float fallDuration = 5f;
-    private float spreadChance = 0.05f;
+    private float spreadChance = 0.01f;
     private float elapsedTime = 0f;
     private ParticleSystem particles;
 
@@ -101,7 +101,7 @@ public class TreeController : MonoBehaviour
         }
     }
 
-    private List<GameObject> GetNearbyTrees(float radius = 5.0f)
+    private List<GameObject> GetNearbyTrees(float radius = 2.5f)
     {
         List<GameObject> nearbyTrees = new List<GameObject>();
         Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
@@ -194,5 +194,13 @@ public class TreeController : MonoBehaviour
             // Set a unique name for each log
             newLog.name = "Log_" + i;
         }
+    }
+
+    public void AddWater()
+    {
+        _isOnFire = false;
+        particles.Stop();
+        audioSource.Stop();
+        StopAllCoroutines();
     }
 }
