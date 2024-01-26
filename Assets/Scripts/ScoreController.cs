@@ -66,6 +66,11 @@ public class ScoreController : MonoBehaviour
 
     }
 
+    public void BeeKilled()
+    {
+        TrackAction(Actions.BEE_KILLED);
+    }
+
     private void TrackAction(Actions action)
     {
         int points = _offenseWeight[action];
