@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using Random = UnityEngine.Random;
+using UnityEngine.SocialPlatforms.Impl;
 
 public class CampfireController : MonoBehaviour
 {
@@ -27,11 +28,18 @@ public class CampfireController : MonoBehaviour
 
     private AudioSource audioSource;
 
+    private GameObject _player;
+
+    private ScoreController _scoreController;
+
     void Start()
     {
         particles = GetComponent<ParticleSystem>();
         particles.Stop();
         audioSource = GetComponent<AudioSource>();
+        _player = GameObject.Find("Player");
+        _scoreController = _player.GetComponent<ScoreController>();
+
 
         if (isOnFire)
         {
@@ -84,6 +92,7 @@ public class CampfireController : MonoBehaviour
         audioSource.clip = campfireSound;
         audioSource.loop = true;
         audioSource.Play();
+        _scoreController.CampfireSetOnFire();
         StartFireTimer();
     }
 

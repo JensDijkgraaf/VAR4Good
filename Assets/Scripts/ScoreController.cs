@@ -29,7 +29,7 @@ public enum Actions
 public class ScoreController : MonoBehaviour
 {
     [SerializeField, Tooltip("Starting score for the player"), Range(0, 100)]
-    private int startScore = 100;
+    private int startScore = 0;
 
     private readonly Dictionary<Actions, int> _offenseWeight = new();
     private readonly Dictionary<Actions, int> _totalOffenses = new();
@@ -69,6 +69,11 @@ public class ScoreController : MonoBehaviour
     public void BeeKilled()
     {
         TrackAction(Actions.BEE_KILLED);
+    }
+
+    public void CampfireSetOnFire()
+    {
+        startScore += 100;
     }
 
     private void TrackAction(Actions action)
