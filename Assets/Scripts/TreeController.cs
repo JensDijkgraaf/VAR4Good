@@ -55,7 +55,9 @@ public class TreeController : MonoBehaviour
         if (_isOnFire)
             SetOnFire();
 
-        beehive = transform.Find("beehivePrefab").gameObject;
+        var beehiveFound = transform.Find("beehivePrefab");
+        if (beehiveFound == null) return;
+        beehive = beehiveFound.gameObject;
         beehiveAudioSource = beehive.GetComponent<AudioSource>();
         if (beehive != null && beehiveAudioSource != null)
         {
