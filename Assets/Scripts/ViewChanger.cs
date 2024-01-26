@@ -8,7 +8,7 @@ public class ViewChanger : MonoBehaviour
     private float fadeDuration = 10f;
     public Color fadeColor;
     [SerializeField] public Camera mainCamera;
-    private Renderer renderer;
+    private new Renderer renderer;
     private DateTime currentTime;
     private DateTime endOfDay;
 

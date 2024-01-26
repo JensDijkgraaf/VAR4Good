@@ -39,7 +39,7 @@ public class TimeController : MonoBehaviour {
         currentTime = DateTime.Now.Date + TimeSpan.FromHours(startHour);
 
         viewChanger = GameObject.Find("XR Origin (XR Rig)").GetComponent<ViewChanger>();
-        endOfDay = currentTime.Date.AddHours(startHour + (minutesInDay / 60f));
+        endOfDay = currentTime.Date.AddDays(1);
     }
 
     // Update is called once per frame
@@ -47,11 +47,10 @@ public class TimeController : MonoBehaviour {
         UpdateTimeOfDay();
         RotateSun();
 
-        var test = currentTime <= endOfDay;
         if (currentTime >= endOfDay && !hasTransitioned) {
             // Transition to overhead view
             viewChanger.TransitionToOverhead();
-            hasTransitioned = false;
+            hasTransitioned = true;
         }
 
     }
