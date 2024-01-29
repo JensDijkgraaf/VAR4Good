@@ -93,9 +93,19 @@ public class CampfireController : MonoBehaviour
         audioSource.loop = true;
         audioSource.Play();
         _scoreController.CampfireSetOnFire();
+        // TODO: Set appropriate time
+        Invoke("CampfireBurnedLong", 130f);
         StartFireTimer();
     }
 
+    private void CampfireBurnedLong()
+    {
+        if (isOnFire)
+        {
+            Invoke("CampfireBurnedLong", 10f);
+            _scoreController.CampfireBurnedLong();
+        }
+    }
     public void removeLogsOverTime()
     {
         logCount--;
