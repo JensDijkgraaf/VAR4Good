@@ -27,8 +27,6 @@ public class ResetGameConfirmation : MonoBehaviour
 
     private void ConfirmReset()
     {
-        // Application.Quit();
-        
         // Reload scene
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
