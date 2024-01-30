@@ -1,11 +1,5 @@
 {
   "dependencies": {
-    "com.meta.xr.simulator": {
-      "version": "file:C:/Users/stout/Downloads/com.meta.xr.simulator-60.0.0.tgz",
-      "depth": 0,
-      "source": "local-tarball",
-      "dependencies": {}
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,

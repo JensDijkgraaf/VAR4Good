@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class TreeController : MonoBehaviour
 {
@@ -12,7 +14,7 @@ public class TreeController : MonoBehaviour
     private List<GameObject> neighbours;
 
     private float fallDuration = 5f;
-    private float spreadChance = 0.01f;
+    private float spreadChance = 0.02f;
     private float elapsedTime = 0f;
     private ParticleSystem particles;
 
@@ -89,8 +91,10 @@ public class TreeController : MonoBehaviour
     {
         foreach (var neighbour in neighbours)
         {
-            if (Random.Range(0f, 1f) <= spreadChance)
+            if (Random.value <= spreadChance)
+            {
                 neighbour.GetComponent<TreeController>().SetOnFire();
+            }
         }
     }
 
