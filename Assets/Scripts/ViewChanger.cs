@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class ViewChanger : MonoBehaviour
 {
-    private float fadeDuration = 10f;
+    private float defaultFadeDuration = 10f;
     public Color fadeColor;
     [SerializeField] public Camera mainCamera;
     private new Renderer renderer;
@@ -58,17 +58,19 @@ public class ViewChanger : MonoBehaviour
         // Freeze the player position.
         FreezePlayer();
 
-        wristCanvas.SetActive(false);
-
         offboardingSummary.ShowSummary();
 
         FadeOutTopRend();
     }
 
     // Switches the camera to the overhead one, with a fade in/out.
-    public void TransitionToOverhead()
+    public void TransitionToOverhead(float fadeDuration = -1f)
     {
-        Fade(0, 1, this.TransitionToOverheadSubtask);
+        fadeDuration = defaultFadeDuration;
+
+        wristCanvas.SetActive(false);
+        
+        Fade(0, 1,fadeDuration, this.TransitionToOverheadSubtask);
     }
 
     // public void TransitionToGround()
@@ -78,15 +80,15 @@ public class ViewChanger : MonoBehaviour
 
     private void FadeOutTopRend()
     {
-        Fade(1, 0);
+        Fade(1, 0,defaultFadeDuration);
     }
 
 
-    private void Fade(float alphaIn,float alphaOut,Action endCall = null)
+    private void Fade(float alphaIn,float alphaOut,float fadeDuration,Action endCall = null)
     {
-        StartCoroutine(FadeRoutine(alphaIn,alphaOut,endCall));
+        StartCoroutine(FadeRoutine(alphaIn,alphaOut,fadeDuration,endCall));
     }
-    public IEnumerator FadeRoutine(float alphaIn,float alphaOut,Action endCall = null)
+    public IEnumerator FadeRoutine(float alphaIn,float alphaOut,float fadeDuration,Action endCall = null)
     {
         float time = 0;
         while(time <=  fadeDuration){
