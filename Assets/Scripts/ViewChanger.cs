@@ -66,7 +66,8 @@ public class ViewChanger : MonoBehaviour
     // Switches the camera to the overhead one, with a fade in/out.
     public void TransitionToOverhead(float fadeDuration = -1f)
     {
-        fadeDuration = defaultFadeDuration;
+        if(Math.Abs(fadeDuration - (-1f)) < 0.01)
+            fadeDuration = defaultFadeDuration;
 
         wristCanvas.SetActive(false);
         

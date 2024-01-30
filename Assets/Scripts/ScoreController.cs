@@ -46,22 +46,6 @@ public class ScoreController : MonoBehaviour
         { Actions.CAMPFIRE_SET_ON_FIRE_WITHOUT_STONES, 2 }
     };    private readonly Dictionary<Actions, int> _totalOffenses = new();
 
-    // Start is called before the first frame update
-    private void Start()
-    {
-        // InitializeDictionary();
-    }
-
-    private void InitializeDictionary()
-    {
-        _offenseWeight.Add(Actions.TREE_HIT, 1);
-        _offenseWeight.Add(Actions.BEE_KILLED, 2);
-        _offenseWeight.Add(Actions.TREE_FIRE, 4);
-        _offenseWeight.Add(Actions.NOT_LOOKING_FIRE, 2);
-        _offenseWeight.Add(Actions.CAMPFIRE_BURNED_LONG, 2);
-        _offenseWeight.Add(Actions.CAMPFIRE_SET_ON_FIRE_WITHOUT_STONES, 2);
-    }
-
     // Public methods
     public void TreeHit()
     {
@@ -117,11 +101,11 @@ public class ScoreController : MonoBehaviour
         {
             string customString = GetCustomString(entry.Key);
             int deduction = entry.Value * _offenseWeight[entry.Key];
-            return $"{customString} x{entry.Value}\nDeducted: {deduction} points";
+            return $"{customString} x{entry.Value}\nDeducted: <b><color=red>{deduction}</color></b> points\n\n";
         }).ToList();
 
         int totalScore = GetScore();
-        summaryLines.Add($"\nTotal: {totalScore}");
+        summaryLines.Add($"\n<size=30>Total: <b>{totalScore}</b></size>");
 
         return string.Join("\n", summaryLines);
 
