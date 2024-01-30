@@ -34,7 +34,6 @@ public enum Actions
 
 public class ScoreController : MonoBehaviour
 {
-    [SerializeField, Tooltip("Starting score for the player"), Range(0, 100)]
     private int startScore = 0;
 
     private static readonly Dictionary<Actions, int> _offenseWeight = new Dictionary<Actions, int>
