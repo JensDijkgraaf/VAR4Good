@@ -25,7 +25,7 @@ public enum Actions
     [CustomString("Not keeping an eye on the fire")]
     NOT_LOOKING_FIRE,
 
-    [CustomString("Campfire burned too long for 10 seconds")]
+    [CustomString("Campfire burned 10 seconds too long")]
     CAMPFIRE_BURNED_LONG,
 }
 

@@ -5,7 +5,7 @@ using UnityEngine;
 using TMPro;
 public class TimeController : MonoBehaviour {
     [SerializeField, Tooltip("The amount of minutes a day should last."), Header("Initial Configuration")]
-    private float minutesInDay;
+    public float minutesInDay;
 
     [SerializeField, Range(0, 24)] private float startHour = 12;
 
