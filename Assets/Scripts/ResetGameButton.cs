@@ -16,23 +16,23 @@ public class ResetGameConfirmation : MonoBehaviour
         InitResetButton.onClick.AddListener(ShowResetPopup);
         ConfirmButton.onClick.AddListener(ConfirmReset);
         CancelButton.onClick.AddListener(CancelReset);
-
+        
         ResetCanvas.SetActive(false);
     }
 
-    private void ShowResetPopup()
+    public void ShowResetPopup()
     {
         ResetCanvas.SetActive(true);
     }
 
-    private void ConfirmReset()
+    public void ConfirmReset()
     {
         // Reload scene
         Scene scene = SceneManager.GetActiveScene();
         SceneManager.LoadScene(scene.name);
     }
 
-    private void CancelReset()
+    public void CancelReset()
     {
         ResetCanvas.SetActive(false);
     }
