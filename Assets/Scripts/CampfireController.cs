@@ -30,7 +30,13 @@ public class CampfireController : MonoBehaviour
 
     private GameObject _player;
 
+    private GameObject _sky;
+
     private ScoreController _scoreController;
+
+    private TimeController _timeController;
+
+    private float _maxAllowedTime;
 
     void Start()
     {
@@ -39,7 +45,9 @@ public class CampfireController : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
         _player = GameObject.Find("Player");
         _scoreController = _player.GetComponent<ScoreController>();
-
+        _sky = GameObject.Find("Sky");
+        _timeController = _sky.GetComponent<TimeController>();
+        _maxAllowedTime = _timeController.minutesInDay * 20f;
 
         if (isOnFire)
         {
@@ -93,9 +101,18 @@ public class CampfireController : MonoBehaviour
         audioSource.loop = true;
         audioSource.Play();
         _scoreController.CampfireSetOnFire();
+        Invoke("CampfireBurnedLong", _maxAllowedTime);
         StartFireTimer();
     }
 
+    private void CampfireBurnedLong()
+    {
+        if (isOnFire)
+        {
+            Invoke("CampfireBurnedLong", 10f);
+            _scoreController.CampfireBurnedLong();
+        }
+    }
     public void removeLogsOverTime()
     {
         logCount--;

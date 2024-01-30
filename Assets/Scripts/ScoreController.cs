@@ -24,6 +24,9 @@ public enum Actions
     
     [CustomString("Not keeping an eye on the fire")]
     NOT_LOOKING_FIRE,
+
+    [CustomString("Campfire burned 10 seconds too long")]
+    CAMPFIRE_BURNED_LONG,
 }
 
 public class ScoreController : MonoBehaviour
@@ -46,6 +49,7 @@ public class ScoreController : MonoBehaviour
         _offenseWeight.Add(Actions.BEE_KILLED, 2);
         _offenseWeight.Add(Actions.TREE_FIRE, 4);
         _offenseWeight.Add(Actions.NOT_LOOKING_FIRE, 2);
+        _offenseWeight.Add(Actions.CAMPFIRE_BURNED_LONG, 2);
     }
 
     // Public methods
@@ -69,6 +73,11 @@ public class ScoreController : MonoBehaviour
     public void BeeKilled()
     {
         TrackAction(Actions.BEE_KILLED);
+    }
+
+    public void CampfireBurnedLong()
+    {
+        TrackAction(Actions.CAMPFIRE_BURNED_LONG);
     }
 
     public void CampfireSetOnFire()
