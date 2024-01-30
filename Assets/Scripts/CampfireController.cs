@@ -59,7 +59,8 @@ public class CampfireController : MonoBehaviour
     {
         // Check if the match has been held against the campfire for 2 seconds or more
         if (isTouchingMatch && Time.time - touchStartTime >= 2f
-             && collidedMatch != null && collidedMatch.GetComponent<MatchController>().isOnFire)
+             && collidedMatch != null && collidedMatch.GetComponent<MatchController>().isOnFire
+             && !isOnFire)
         {
             setOnFire();
             collidedMatch = null;
@@ -92,7 +93,13 @@ public class CampfireController : MonoBehaviour
     {
         // If we already are on fire, we don't do anything.
         if (isOnFire)
-            return;
+           return;
+
+        for (int i = 0; i < 8 - stoneCount; i++)
+        {
+            _scoreController.CampfireSetOnFireWithoutStones();
+        }
+
         isOnFire = true;
         var main = particles.main;
         main.loop = true;
@@ -195,7 +202,7 @@ public class CampfireController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name.Contains("Match") && 
-            other.GetComponent<MatchController>().isOnFire && logCount == 5 && stoneCount == 2)
+            other.GetComponent<MatchController>().isOnFire && logCount == 5)
         {
             // Start the timer when the match touches the tree
             isTouchingMatch = true;
