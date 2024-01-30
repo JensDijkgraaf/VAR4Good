@@ -35,6 +35,9 @@ public class TimeController : MonoBehaviour {
     private ViewChanger viewChanger;
 
     private bool hasTransitioned = false;
+
+    private bool finishedTutorial = false;
+
     void Start() {
         currentTime = DateTime.Now.Date + TimeSpan.FromHours(startHour);
 
@@ -43,17 +46,29 @@ public class TimeController : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update() {
-        UpdateTimeOfDay();
-        RotateSun();
+    void Update()
+    {
+        if (finishedTutorial) 
+        {
+            UpdateTimeOfDay();
+            RotateSun();
 
-        if (currentTime >= endOfDay && !hasTransitioned) {
-            // Transition to overhead view
-            viewChanger.TransitionToOverhead();
-            hasTransitioned = true;
+            if (currentTime >= endOfDay && !hasTransitioned)
+            {
+                // Transition to overhead view
+                viewChanger.TransitionToOverhead();
+                hasTransitioned = true;
+            }
         }
-
     }
+
+    public void CheckTutorial()
+    {
+        if (!finishedTutorial)
+        {
+            finishedTutorial = true;
+        }
+    } 
     private void UpdateTimeOfDay() {
 
         currentTime = currentTime.AddSeconds(Time.deltaTime * MINUTES_IN_DAY / minutesInDay);
