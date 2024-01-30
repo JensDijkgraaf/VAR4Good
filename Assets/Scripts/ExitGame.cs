@@ -10,7 +10,7 @@ public class QuitConfirmation : MonoBehaviour
 
     private ViewChanger viewChanger;
 
-    void start()
+    void Start()
     {
         InitQuitButton.onClick.AddListener(ShowQuitPopup);
         ConfirmButton.onClick.AddListener(ConfirmQuit);
