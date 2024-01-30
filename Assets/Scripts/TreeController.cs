@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TreeController : MonoBehaviour
 {
-    private bool _isOnFire = false;
+    public bool _isOnFire = false;
 
     private float _burningTime = 30f;
 
@@ -12,11 +12,13 @@ public class TreeController : MonoBehaviour
     private List<GameObject> neighbours;
 
     private float fallDuration = 5f;
-    private float spreadChance = 0.05f;
+    private float spreadChance = 0.01f;
     private float elapsedTime = 0f;
     private ParticleSystem particles;
 
     private AudioSource audioSource;
+
+    private AudioSource beehiveAudioSource;
 
     [SerializeField, Tooltip("Sound for tree falling")]
     private AudioClip treeFallSound;
@@ -24,11 +26,16 @@ public class TreeController : MonoBehaviour
     [SerializeField, Tooltip("Sound for fire")]
     private AudioClip fireSound;
 
+    [SerializeField, Tooltip("Sound for bees")]
+    private AudioClip beesSound;
+
 
     [SerializeField, Tooltip("Prefab for the log")]
     private GameObject logPrefab;
 
     private ScoreController _scoreController;
+
+    public GameObject beehive;
 
     private GameObject Player;
 
@@ -44,8 +51,20 @@ public class TreeController : MonoBehaviour
         particles = GetComponent<ParticleSystem>();
         if (particles is not null)
             particles.Stop();
+
         if (_isOnFire)
             SetOnFire();
+
+        var beehiveFound = transform.Find("beehivePrefab");
+        if (beehiveFound == null) return;
+        beehive = beehiveFound.gameObject;
+        beehiveAudioSource = beehive.GetComponent<AudioSource>();
+        if (beehive != null && beehiveAudioSource != null)
+        {
+            beehiveAudioSource.clip = beesSound;
+            beehiveAudioSource.loop = true;
+            beehiveAudioSource.Play();
+        }
     }
 
     // Update is called once per frame
@@ -84,7 +103,7 @@ public class TreeController : MonoBehaviour
         }
     }
 
-    private List<GameObject> GetNearbyTrees(float radius = 5.0f)
+    private List<GameObject> GetNearbyTrees(float radius = 2.5f)
     {
         List<GameObject> nearbyTrees = new List<GameObject>();
         Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
@@ -150,6 +169,11 @@ public class TreeController : MonoBehaviour
             audioSource.Stop();
         }
 
+        if (beehiveAudioSource != null)
+        {
+            beehiveAudioSource.Stop();
+        }
+
         // Destroy the tree
         Destroy(this.gameObject);
     }
@@ -172,5 +196,13 @@ public class TreeController : MonoBehaviour
             // Set a unique name for each log
             newLog.name = "Log_" + i;
         }
+    }
+
+    public void AddWater()
+    {
+        _isOnFire = false;
+        particles.Stop();
+        audioSource.Stop();
+        StopAllCoroutines();
     }
 }

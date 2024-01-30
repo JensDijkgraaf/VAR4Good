@@ -24,12 +24,15 @@ public enum Actions
     
     [CustomString("Not keeping an eye on the fire")]
     NOT_LOOKING_FIRE,
+
+    [CustomString("Campfire burned 10 seconds too long")]
+    CAMPFIRE_BURNED_LONG,
 }
 
 public class ScoreController : MonoBehaviour
 {
     [SerializeField, Tooltip("Starting score for the player"), Range(0, 100)]
-    private int startScore = 100;
+    private int startScore = 0;
 
     private readonly Dictionary<Actions, int> _offenseWeight = new();
     private readonly Dictionary<Actions, int> _totalOffenses = new();
@@ -46,6 +49,7 @@ public class ScoreController : MonoBehaviour
         _offenseWeight.Add(Actions.BEE_KILLED, 2);
         _offenseWeight.Add(Actions.TREE_FIRE, 4);
         _offenseWeight.Add(Actions.NOT_LOOKING_FIRE, 2);
+        _offenseWeight.Add(Actions.CAMPFIRE_BURNED_LONG, 2);
     }
 
     // Public methods
@@ -64,6 +68,21 @@ public class ScoreController : MonoBehaviour
     {
         TrackAction(Actions.NOT_LOOKING_FIRE);
 
+    }
+
+    public void BeeKilled()
+    {
+        TrackAction(Actions.BEE_KILLED);
+    }
+
+    public void CampfireBurnedLong()
+    {
+        TrackAction(Actions.CAMPFIRE_BURNED_LONG);
+    }
+
+    public void CampfireSetOnFire()
+    {
+        startScore += 100;
     }
 
     private void TrackAction(Actions action)

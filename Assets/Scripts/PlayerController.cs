@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -10,6 +11,7 @@ public class PlayerController : MonoBehaviour
     private CampfireController _campfireController;
     private const float PermittedAngle = 45f;
     private const float NSecondsCheck = 1;
+    private float time = 0;
 
     private void Start()
     {
@@ -17,16 +19,14 @@ public class PlayerController : MonoBehaviour
         _campfire = GameObject.Find("Campfire");
         _campfireController = _campfire.GetComponent<CampfireController>();
         _scoreController = _player.GetComponent<ScoreController>();
-        // Start the coroutine for periodic checks
-        StartCoroutine(PeriodicCheck());
     }
 
-    private IEnumerator PeriodicCheck()
+    private void Update()
     {
-        while (true)
+        time += Time.deltaTime;
+        if (time >= 1f)
         {
-            yield return new WaitForSeconds(NSecondsCheck);
-
+            time = 0;
             var isLooking = IsLookingInCampfireDirection();
             if (!isLooking && _campfireController.isOnFire)
             {
@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
 
     private bool IsLookingInCampfireDirection()
     {
@@ -44,6 +43,6 @@ public class PlayerController : MonoBehaviour
         // Get the angle between the player's forward direction and the player-to-campfire direction
         float angle = Vector3.Angle(_player.transform.forward, playerToCampfireDirection);
 
-        return angle <= PermittedAngle;
+        return angle >= PermittedAngle;
     }
 }
