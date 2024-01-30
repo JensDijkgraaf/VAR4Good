@@ -8,6 +8,7 @@ public class QuitConfirmation : MonoBehaviour
     public Button ConfirmButton;
     public Button CancelButton;
 
+    private ViewChanger viewChanger;
 
     void start()
     {
@@ -16,6 +17,8 @@ public class QuitConfirmation : MonoBehaviour
         CancelButton.onClick.AddListener(CancelQuit);
 
         QuitCanvas.SetActive(false);
+        
+        viewChanger = GameObject.Find("XR Origin (XR Rig)").GetComponent<ViewChanger>();
     }
 
     public void ShowQuitPopup()
@@ -25,7 +28,8 @@ public class QuitConfirmation : MonoBehaviour
 
     public void ConfirmQuit()
     {
-        Application.Quit();
+        // We end the game
+       viewChanger.TransitionToOverhead(2f); 
     }
 
     public void CancelQuit()
