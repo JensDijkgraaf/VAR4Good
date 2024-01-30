@@ -58,8 +58,6 @@ public class ViewChanger : MonoBehaviour
         // Freeze the player position.
         FreezePlayer();
 
-        wristCanvas.SetActive(false);
-
         offboardingSummary.ShowSummary();
 
         FadeOutTopRend();
@@ -69,6 +67,8 @@ public class ViewChanger : MonoBehaviour
     public void TransitionToOverhead(float fadeDuration = -1f)
     {
         fadeDuration = defaultFadeDuration;
+
+        wristCanvas.SetActive(false);
         
         Fade(0, 1,fadeDuration, this.TransitionToOverheadSubtask);
     }
