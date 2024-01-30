@@ -123,10 +123,10 @@ public class CampfireController : MonoBehaviour
     public void removeLogsOverTime()
     {
         logCount--;
-        neighbours = GetNearbyTrees(logCount);
+        neighbours = GetNearbyTrees(1.5f*logCount);
         if (logCount >= 2)
         {
-            Invoke("removeLogsOverTime", 5f);
+            Invoke("removeLogsOverTime", 10f);
         }
     }
 
@@ -141,7 +141,7 @@ public class CampfireController : MonoBehaviour
         {
             logCount--;
         }
-        neighbours = GetNearbyTrees(logCount);
+        neighbours = GetNearbyTrees(1.5f*logCount);
     }
 
     public void putFireOut()
@@ -153,7 +153,7 @@ public class CampfireController : MonoBehaviour
 
     private void StartFireTimer()
     {
-        Invoke("removeLogsOverTime", 5f);
+        Invoke("removeLogsOverTime", 10f);
     }
 
     public void AddStone()
@@ -164,7 +164,7 @@ public class CampfireController : MonoBehaviour
     public void AddLog()
     {
         logCount++;
-        neighbours = GetNearbyTrees(logCount);
+        neighbours = GetNearbyTrees(1.5f*logCount);
     }
 
     public void AddSand()
@@ -181,8 +181,10 @@ public class CampfireController : MonoBehaviour
     {
         foreach (var neighbour in neighbours)
         {
-            if (Random.Range(0f, 1f) <= spreadChance)
+            if (Random.value <= spreadChance)
+            {
                 neighbour.GetComponent<TreeController>().SetOnFire();
+            }
         }
     }
 
