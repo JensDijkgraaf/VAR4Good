@@ -9,7 +9,6 @@ public class QuitConfirmation : MonoBehaviour
     public Button ConfirmButton;
     public Button CancelButton;
     private bool endGame = false;
-    private TimeController _time;
 
     private ViewChanger viewChanger;
 
@@ -22,8 +21,6 @@ public class QuitConfirmation : MonoBehaviour
         QuitCanvas.SetActive(false);
 
         viewChanger = GameObject.Find("XR Origin (XR Rig)").GetComponent<ViewChanger>();
-        _time = GameObject.Find("Sky").GetComponent<TimeController>();
-
     }
 
 
@@ -52,9 +49,6 @@ public class QuitConfirmation : MonoBehaviour
         }
         else
         {
-            // We freeze the time
-            _time.FreezeTime();
-
             // We end the game
             RemoveQuitPopup();
             viewChanger.TransitionToOverhead(2f);

@@ -17,6 +17,7 @@ public class ViewChanger : MonoBehaviour
     private CharacterController characterController;
     private JumpController jumpController;
     private GameObject wristCanvas;
+    private TimeController _time;
 
     private OffboardingSummary offboardingSummary;
 
@@ -33,6 +34,8 @@ public class ViewChanger : MonoBehaviour
         characterController = transform.GetComponent<CharacterController>();
         jumpController = transform.GetComponent<JumpController>();
         wristCanvas = GameObject.Find("WristCanvas");
+        _time = GameObject.Find("Sky").GetComponent<TimeController>();
+ 
     }
 
     private void FreezePlayer()
@@ -54,6 +57,9 @@ public class ViewChanger : MonoBehaviour
     private void TransitionToOverheadSubtask()
     {
         ShowOverheadView();
+
+        // We freeze the time
+        _time.FreezeTime();
 
         // Freeze the player position.
         FreezePlayer();
