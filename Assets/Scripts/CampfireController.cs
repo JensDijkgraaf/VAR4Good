@@ -13,7 +13,7 @@ public class CampfireController : MonoBehaviour
     public bool isOnFire = false;
 
     private float elapsedTime = 0f;
-    private float spreadChance = 0.05f;
+    private float spreadChance = 0.01f;
     
     private bool isTouchingMatch = false;
 
@@ -75,7 +75,7 @@ public class CampfireController : MonoBehaviour
             elapsedTime += Time.deltaTime;
 
             // Check if a second has passed
-            if (elapsedTime >= 1f)
+            if (elapsedTime >= 3f)
             {
                 elapsedTime = 0f; // Reset the timer
                 // Spread fire to neighbours
@@ -122,12 +122,12 @@ public class CampfireController : MonoBehaviour
     }
     public void removeLogsOverTime()
     {
-        logCount--;
-        neighbours = GetNearbyTrees(1.5f*logCount);
-        if (logCount >= 2)
+        if (logCount >= 6)
         {
-            Invoke("removeLogsOverTime", 10f);
+            logCount--;
+            neighbours = GetNearbyTrees(1.3f*logCount);
         }
+        Invoke("removeLogsOverTime", 10f);
     }
 
     public void removeLog(bool isSand = false)
@@ -141,7 +141,7 @@ public class CampfireController : MonoBehaviour
         {
             logCount--;
         }
-        neighbours = GetNearbyTrees(1.5f*logCount);
+        neighbours = GetNearbyTrees(1.3f*logCount);
     }
 
     public void putFireOut()
@@ -164,7 +164,7 @@ public class CampfireController : MonoBehaviour
     public void AddLog()
     {
         logCount++;
-        neighbours = GetNearbyTrees(1.5f*logCount);
+        neighbours = GetNearbyTrees(1.3f*logCount);
     }
 
     public void AddSand()

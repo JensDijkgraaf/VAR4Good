@@ -6,14 +6,6 @@ public class FireCollision : MonoBehaviour
     [SerializeField, Range(0, 5)]
     private float velocity_threshold;
 
-    private ParticleSystem particles;
-    private void Start()
-    {
-        particles = GetComponent<ParticleSystem>();
-        if (particles is not null) ;
-        // particles.Stop();
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         var otherObjectMatch = other.gameObject.name.IndexOf("match", StringComparison.OrdinalIgnoreCase) >= 0;
