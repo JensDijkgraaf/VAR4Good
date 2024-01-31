@@ -36,38 +36,39 @@ public class TimeController : MonoBehaviour {
 
     private bool hasTransitioned = false;
 
-    private bool finishedTutorial = false;
+    private bool freezeTime = true;
 
     void Start() {
         currentTime = DateTime.Now.Date + TimeSpan.FromHours(startHour);
 
         viewChanger = GameObject.Find("XR Origin (XR Rig)").GetComponent<ViewChanger>();
         endOfDay = currentTime.Date.AddDays(1);
+        UpdateTimeOfDay();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (finishedTutorial) 
-        {
-            UpdateTimeOfDay();
-            RotateSun();
+        if (freezeTime) return;
+        UpdateTimeOfDay();
+        RotateSun();
 
-            if (currentTime >= endOfDay && !hasTransitioned)
-            {
-                // Transition to overhead view
-                viewChanger.TransitionToOverhead();
-                hasTransitioned = true;
-            }
+        if (currentTime >= endOfDay && !hasTransitioned)
+        {
+            // Transition to overhead view
+            viewChanger.TransitionToOverhead();
+            hasTransitioned = true;
         }
     }
 
-    public void CheckTutorial()
+    public void UnfreezeTime()
     {
-        if (!finishedTutorial)
-        {
-            finishedTutorial = true;
-        }
+        freezeTime = false;
+    } 
+    
+    public void FreezeTime()
+    {
+        freezeTime = true;
     } 
     private void UpdateTimeOfDay() {
 
