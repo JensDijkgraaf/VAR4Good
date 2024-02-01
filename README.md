@@ -1,5 +1,8 @@
-# CampfireCompanion
-Groep J
+# Campfire Companion - Groep J
+### Git
+[Git link](https://github.com/JensDijkgraaf/VAR4Good)
+
+### Verdeling
 
 Thomas Brouwer - 13209701 - User experience: wristUI, adjustable movement speed, camera type, camera turning speed, snapping angle, logica wanneer turning speed of snapping angle te zien is, reset default button & exit game button (in tandem met finish game button)
 
