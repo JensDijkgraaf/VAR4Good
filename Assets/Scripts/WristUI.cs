@@ -23,4 +23,9 @@ public class WristUI : MonoBehaviour
     {
         _wristUICanvas.enabled = !_wristUICanvas.enabled;
     }
+
+    public void EnableMenu()
+    {
+        _wristUICanvas.enabled = true;
+    }
 }
