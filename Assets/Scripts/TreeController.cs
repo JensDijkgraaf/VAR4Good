@@ -14,7 +14,7 @@ public class TreeController : MonoBehaviour
     private List<GameObject> neighbours;
 
     private float fallDuration = 5f;
-    private float spreadChance = 0.01f;
+    private float spreadChance = 0.02f;
     private float elapsedTime = 0f;
     private ParticleSystem particles;
 
@@ -78,7 +78,7 @@ public class TreeController : MonoBehaviour
             elapsedTime += Time.deltaTime;
 
             // Check if a second has passed
-            if (elapsedTime >= 2f)
+            if (elapsedTime >= 1f)
             {
                 elapsedTime = 0f; // Reset the timer
                 // Spread fire to neighbours
